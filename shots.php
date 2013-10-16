@@ -481,6 +481,12 @@ function shots_new_serie($dir)
 		}
 	}
 	
+	// Create new id if no gaps.
+	if ($id === $n - 1)
+	{
+		$id++;
+	}
+	
 	$serie = $dir . "/ser" . $id;
 	mkdir($serie);
 }
