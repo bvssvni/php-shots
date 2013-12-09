@@ -494,10 +494,6 @@ function shots_new_serie($dir)
 	
 	$serie = $dir . "/ser" . $id;
 	mkdir($serie);
-
-	// TEST
-	echo(“Added”);
-	echo($serie);
 }
 
 function shots_series($edit, $dir, $width)
