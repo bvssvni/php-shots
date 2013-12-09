@@ -471,24 +471,33 @@ function shots_new_serie($dir)
 	$n = count($series);
 	
 	// Find new id for serie.
+	// Do this by searching first for gaps in the sequence.
 	$id = 0;
-	for ($i = 0; $i < $n; ++$i)
+	for ($j = 0; $j < $n; ++$j)
 	{
-		$serie = $series[$i];
-		if ($serie === $dir . "/ser" . $id)
+		for ($i = 0; $i < $n; ++$i)
 		{
-			++$id;
+			$serie = $series[$i];
+			if ($serie === $dir . "/ser" . $j)
+			{
+				++$id;
+				break;
+			}
 		}
 	}
 	
 	// Create new id if no gaps.
-	if ($id === $n - 1)
+	if ($id === n - 1)
 	{
-		$id++;
+		$id = $n;
 	}
 	
 	$serie = $dir . "/ser" . $id;
 	mkdir($serie);
+
+	// TEST
+	echo(“Added”);
+	echo($serie);
 }
 
 function shots_series($edit, $dir, $width)
