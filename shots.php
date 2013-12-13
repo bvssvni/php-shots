@@ -443,10 +443,13 @@ function shots_upload_image($dir)
 	$id = 0;
 	for ($i = 0; $i < $n; ++$i)
 	{
-		$pic = $pics[$i];
-		if ($pic === $dir . "/img" . $id . ".jpg")
-		{
-			++$id;
+		for ($j = 0; $j < $n; ++$j) {
+			$pic = $pics[$j];
+			if ($pic === $dir . "/img" . $id . ".jpg")
+			{
+				++$id;
+				break;
+			}
 		}
 	}
 	
@@ -487,7 +490,7 @@ function shots_new_serie($dir)
 	}
 	
 	// Create new id if no gaps.
-	if ($id === n - 1)
+	if ($id === $n - 1)
 	{
 		$id = $n;
 	}
