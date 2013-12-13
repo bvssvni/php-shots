@@ -141,6 +141,10 @@ function shots_get_pics($dir)
     return $list;
 }
 
+function shots_file_id($id) {
+	return 100000 + $id;
+}
+
 function shots_get_series($dir)
 {
 	$handle = opendir($dir);
@@ -178,7 +182,7 @@ function shots_delete_image($dir)
 	$n = count($pics);
 	for ($i = 0; $i < $n; ++$i)
 	{
-		$newName = $dir . "/img" . $i . ".jpg";
+		$newName = $dir . "/img" . shots_file_id($i) . ".jpg";
 		rename($pics[$i], $newName);
 	}
 }
@@ -212,7 +216,7 @@ function shots_delete_serie($dir)
 	$n = count($series);
 	for ($i = 0; $i < $n; ++$i)
 	{
-		$newName = $dir . "/ser" . $i;
+		$newName = $dir . "/ser" . shots_file_id($i);
 		rename($series[$i], $newName);
 	}
 }
@@ -445,7 +449,7 @@ function shots_upload_image($dir)
 	{
 		for ($j = 0; $j < $n; ++$j) {
 			$pic = $pics[$j];
-			if ($pic === $dir . "/img" . $id . ".jpg")
+			if ($pic === $dir . "/img" . shots_file_id($id) . ".jpg")
 			{
 				++$id;
 				break;
@@ -453,7 +457,7 @@ function shots_upload_image($dir)
 		}
 	}
 	
-	$pic = $dir . "/img" . $id . ".jpg";
+	$pic = $dir . "/img" . shots_file_id($id) . ".jpg";
 	
 	if (move_uploaded_file($uploadedimage, $pic))
 	{
@@ -481,7 +485,7 @@ function shots_new_serie($dir)
 		for ($i = 0; $i < $n; ++$i)
 		{
 			$serie = $series[$i];
-			if ($serie === $dir . "/ser" . $j)
+			if ($serie === $dir . "/ser" . shots_file_id($j))
 			{
 				++$id;
 				break;
@@ -495,7 +499,7 @@ function shots_new_serie($dir)
 		$id = $n;
 	}
 	
-	$serie = $dir . "/ser" . $id;
+	$serie = $dir . "/ser" . shots_file_id($id);
 	mkdir($serie);
 }
 
