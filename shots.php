@@ -137,12 +137,44 @@ function shots_get_pics($dir)
     }
     
     closedir($handle);
-    natsort($list);
+    sort($list);
     return $list;
 }
 
 function shots_file_id($id) {
 	return 100000 + $id;
+}
+
+function shots_pic_file($dir, $id) {
+	if (is_null($dir)) {echo("shots_pic_file{dir is null}"); return NULL;}
+	if (is_null($id)) {echo("shots_pic_file{id is null}"); return NULL;}
+
+	return $dir . "/img" . shots_file_id($id) . ".jpg";
+}
+
+function shots_check_pics_is_sorted($dir, $files) {
+	$n = count($files);
+	for ($i = 0; $i < $n; ++$i) {
+		$name = shots_pic_file($dir, $i);
+		if ($files[$i] !== $name) {
+			return FALSE;
+		}
+	}
+	
+	return TRUE;
+}
+
+function shots_force_pics_sorted($dir, $files) {
+	if (shots_check_pics_is_sorted($dir, $files)) {return;}
+	
+	$n = count($files);
+	for ($i = 0; $i < $n; ++$i) {
+		$name = shots_pic_file($dir, $i);
+		if ($files[$i] !== $name) {
+			rename($files[$i], $name);
+			$files[$i] = $name;
+		}
+	}
 }
 
 function shots_get_series($dir)
@@ -162,7 +194,7 @@ function shots_get_series($dir)
     }
     
     closedir($handle);
-    natsort($list);
+    sort($list);
     return $list;
 }
 
@@ -188,7 +220,7 @@ function shots_delete_image($edit, $dir)
 	$n = count($pics);
 	for ($i = 0; $i < $n; ++$i)
 	{
-		$newName = $dir . "/img" . shots_file_id($i) . ".jpg";
+		$newName = shots_pic_file($dir, $i);
 		rename($pics[$i], $newName);
 	}
 }
@@ -452,15 +484,29 @@ function shots_move_image_last($edit, $dir)
 	$n = count($pics);
 	if ($n === 0) {return;}
 	
-	// Swap files with last picture.
 	$last = $pics[$n - 1];
-	
 	if ($prev === $last) {return;}
 	
+	
+	// Rename all other images to correct sequence.
 	$tmp = $dir . "/tmp.jpg";
-	rename($last, $tmp);
-	rename($file, $last);
-	rename($tmp, $file);
+	
+	// First, rename the selected file to a temporary image.
+	rename($file, $tmp);
+	$id = 0;
+	// Second, rename all the others to follow correct sequence.
+	for ($i = 0; $i < $n; ++$i) {
+		$file_to_move = $pics[$i];
+		if ($file_to_move === $file) {continue;}
+		
+		$newname = shots_pic_file($dir, $id);
+		if ($file_to_move === $newname) {continue;}
+		rename($file_to_move, $newname);
+		$id++;
+	}
+	
+	// Third, rename the temporary image to the last id.
+	rename($tmp, shots_pic_file($dir, $id));
 }
 
 $shots_move_serie_last_done = FALSE;
@@ -517,7 +563,7 @@ function shots_upload_image($edit, $dir)
 	{
 		for ($j = 0; $j < $n; ++$j) {
 			$pic = $pics[$j];
-			if ($pic === $dir . "/img" . shots_file_id($id) . ".jpg")
+			if ($pic === shots_pic_file($dir, $id))
 			{
 				++$id;
 				break;
@@ -525,7 +571,7 @@ function shots_upload_image($edit, $dir)
 		}
 	}
 	
-	$pic = $dir . "/img" . shots_file_id($id) . ".jpg";
+	$pic = shots_pic_file($dir, $id);
 	
 	if (move_uploaded_file($uploadedimage, $pic))
 	{
