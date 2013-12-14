@@ -286,14 +286,24 @@ function shots_move_image_first($edit, $dir)
 	$n = count($pics);
 	if ($n === 0) {return;}
 	
-	// Swap files with first picture.
 	$first = $pics[0];
 	if ($prev === $first) {return;}
 	
 	$tmp = $dir . "/tmp.jpg";
-	rename($first, $tmp);
-	rename($file, $first);
-	rename($tmp, $file);
+	rename($file, $tmp);
+	
+	$id = $n - 1;
+	for ($i = $n - 1; $i >= 0; --$i) {
+		if ($pics[$i] === $file) {continue;}
+		
+		$newname = shots_pic_file($dir, $id);
+		$id--;
+		if ($pics[$i] === $newname) {continue;}
+		
+		rename($pics[$i], $newname);
+	}
+	
+	rename($tmp, shots_pic_file($dir, 0));
 }
 
 $shots_move_serie_first_done = FALSE;
@@ -500,13 +510,13 @@ function shots_move_image_last($edit, $dir)
 		if ($file_to_move === $file) {continue;}
 		
 		$newname = shots_pic_file($dir, $id);
+		$id++;
 		if ($file_to_move === $newname) {continue;}
 		rename($file_to_move, $newname);
-		$id++;
 	}
 	
 	// Third, rename the temporary image to the last id.
-	rename($tmp, shots_pic_file($dir, $id));
+	rename($tmp, shots_pic_file($dir, $n - 1));
 }
 
 $shots_move_serie_last_done = FALSE;
