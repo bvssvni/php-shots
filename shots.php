@@ -329,10 +329,21 @@ function shots_move_serie_first($edit, $dir)
 	$first = $series[0];
 	if ($prev === $first) {return;}
 	
-	$tmp = $dir . "/tmp.jpg";
-	rename($first, $tmp);
-	rename($file, $first);
-	rename($tmp, $file);
+	$tmp = $dir . "/tmpdir";
+	rename($file, $tmp);
+	
+	$id = $n - 1;
+	for ($i = $n - 1; $i >= 0; --$i) {
+		if ($series[$i] === $file) {continue;}
+		
+		$newname = $dir . "/ser" . shots_file_id($id);
+		$id--;
+		if ($series[$i] === $newname) {continue;}
+		
+		rename($series[$i], $newname);
+	}
+	
+	rename($tmp, $dir . "/ser" . shots_file_id(0));
 }
 
 $shots_move_image_up_done = FALSE;
@@ -543,10 +554,21 @@ function shots_move_serie_last($edit, $dir)
 	
 	if ($prev === $last) {return;}
 	
-	$tmp = $dir . "/tmp.jpg";
-	rename($last, $tmp);
-	rename($file, $last);
-	rename($tmp, $file);
+	$tmp = $dir . "/tmpdir";
+	
+	rename($file, $tmp);
+	$id = 0;
+	for ($i = 0; $i < $n; ++$i) {
+		$file_to_move = $series[$i];
+		if ($file_to_move === $file) {continue;}
+		
+		$newname = $dir . "/ser" . shots_file_id($id);
+		$id++;
+		if ($file_to_move === $newname) {continue;}
+		rename($file_to_move, $newname);
+	}
+	
+	rename($tmp, $dir . "/ser" . shots_file_id($n - 1));
 }
 
 $shots_upload_image_done = FALSE;
