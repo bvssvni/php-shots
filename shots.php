@@ -166,8 +166,14 @@ function shots_get_series($dir)
     return $list;
 }
 
-function shots_delete_image($dir)
+$shots_delete_image_done = FALSE;
+function shots_delete_image($edit, $dir)
 {
+	// Protect against non-admins and multiple updates.
+	global $shots_delete_image_done;
+	if ($shots_delete_image_done || !$edit) {return;}
+	$shots_delete_image_done = TRUE;
+
 	$action = $_POST["action"];
 	if ($action !== "deleteButton") {return;}
 	
@@ -200,8 +206,16 @@ function rrmdir($dir) {
    } 
  }
 
-function shots_delete_serie($dir)
+$shots_delete_serie_done = FALSE;
+function shots_delete_serie($edit, $dir)
 {
+	// Protect against non-admins and multiple updates.
+	global $shots_delete_serie_done;
+	if ($shots_delete_serie_done || !$edit) {return;}
+	$shots_delete_serie_done = TRUE;
+	
+	$shots_delete_serie_done = TRUE;
+	
 	$action = $_POST["action"];
 	if ($action !== "deleteButton") {return;}
 	
@@ -221,8 +235,14 @@ function shots_delete_serie($dir)
 	}
 }
 
-function shots_move_image_first($dir)
+$shots_move_image_first_done = FALSE;
+function shots_move_image_first($edit, $dir)
 {
+	// Protect against non-admins and multiple updates.
+	global $shots_move_image_first_done;
+	if ($shots_move_image_first_done || !$edit) {return;}
+	$shots_move_image_first_done = TRUE;
+
 	$action = $_POST["action"];
 	if ($action !== "moveFirstButton") {return;}
 	
@@ -244,8 +264,14 @@ function shots_move_image_first($dir)
 	rename($tmp, $file);
 }
 
-function shots_move_serie_first($dir)
+$shots_move_serie_first_done = FALSE;
+function shots_move_serie_first($edit, $dir)
 {
+	// Protect against non-admins and multiple updates.
+	global $shots_move_serie_first_done;
+	if ($shots_move_serie_first_done || !$edit) {return;}
+	$shots_move_serie_first_done = TRUE;
+
 	$action = $_POST["action"];
 	if ($action !== "moveFirstButton") {return;}
 	
@@ -267,8 +293,14 @@ function shots_move_serie_first($dir)
 	rename($tmp, $file);
 }
 
-function shots_move_image_up($dir)
+$shots_move_image_up_done = FALSE;
+function shots_move_image_up($edit, $dir)
 {
+	// Protect against non-admins and multiple updates.
+	global $shots_move_image_up_done;
+	if ($shots_move_image_up_done || !$edit) {return;}
+	$shots_move_image_up_done = TRUE;
+
 	$action = $_POST["action"];
 	if ($action !== "moveUpButton") {return;}
 		
@@ -296,8 +328,14 @@ function shots_move_image_up($dir)
 	}
 }
 
-function shots_move_serie_up($dir)
+$shots_move_serie_up_done = FALSE;
+function shots_move_serie_up($edit, $dir)
 {
+	// Protect against non-admins and multiple updates.
+	global $shots_move_serie_up_done;
+	if ($shots_move_serie_up_done || !$edit) {return;}
+	$shots_move_serie_up_done = TRUE;
+
 	$action = $_POST["action"];
 	if ($action !== "moveUpButton") {return;}
 	
@@ -325,8 +363,14 @@ function shots_move_serie_up($dir)
 	}
 }
 
-function shots_move_image_down($dir)
+$shots_move_image_down_done = FALSE;
+function shots_move_image_down($edit, $dir)
 {
+	// Protect against non-admins and multiple updates.
+	global $shots_move_image_down_done;
+	if ($shots_move_image_down_done || !$edit) {return;}
+	$shots_move_image_down_done = TRUE;
+
 	$action = $_POST["action"];
 	if ($action !== "moveDownButton") {return;}
 		
@@ -354,8 +398,14 @@ function shots_move_image_down($dir)
 	}
 }
 
-function shots_move_serie_down($dir)
+$shots_move_serie_down_done = FALSE;
+function shots_move_serie_down($edit, $dir)
 {
+	// Protect against non-admins and multiple updates.
+	global $shots_move_serie_down_done;
+	if ($shots_move_serie_down_done || !$edit) {return;}
+	$shots_move_serie_down_done = TRUE;
+
 	$action = $_POST["action"];
 	if ($action !== "moveDownButton") {return;}
 		
@@ -383,8 +433,14 @@ function shots_move_serie_down($dir)
 	}
 }
 
-function shots_move_image_last($dir)
+$shots_move_image_last_done = FALSE;
+function shots_move_image_last($edit, $dir)
 {
+	// Protect against non-admins and multiple updates.
+	global $shots_move_image_last_done;
+	if ($shots_move_image_last_done || !$edit) {return;}
+	$shots_move_image_last_done = TRUE;
+
 	$action = $_POST["action"];
 	if ($action !== "moveLastButton") {return;}
 	
@@ -407,8 +463,14 @@ function shots_move_image_last($dir)
 	rename($tmp, $file);
 }
 
-function shots_move_serie_last($dir)
+$shots_move_serie_last_done = FALSE;
+function shots_move_serie_last($edit, $dir)
 {
+	// Protect against non-admins and multiple updates.
+	global $shots_move_serie_last_done;
+	if ($shots_move_serie_last_done || !$edit) {return;}
+	$shots_move_serie_last_done = TRUE;
+
 	$action = $_POST["action"];
 	if ($action !== "moveLastButton") {return;}
 	
@@ -431,8 +493,14 @@ function shots_move_serie_last($dir)
 	rename($tmp, $file);
 }
 
-function shots_upload_image($dir)
+$shots_upload_image_done = FALSE;
+function shots_upload_image($edit, $dir)
 {
+	// Protect against non-admins and multiple updates.
+	global $shots_upload_image_done;
+	if ($shots_upload_image_done || !$edit) {return;}
+	$shots_upload_image_done = TRUE;
+
 	$action = $_POST["action"];
 	if ($action !== "uploadImageButton") {return;}
 	
@@ -469,8 +537,14 @@ function shots_upload_image($dir)
 	}
 }
 
-function shots_new_serie($dir)
+$shots_new_serie_done = FALSE;
+function shots_new_serie($edit, $dir)
 {
+	// Protect against non-admins and multiple updates.
+	global $shots_new_serie_done;
+	if ($shots_new_serie_done || !$edit) {return;}
+	$shots_new_serie_done = TRUE;
+
 	$action = $_POST["action"];
 	if ($action !== "newSerieButton") {return;}
 	
@@ -554,21 +628,21 @@ function shots($edit, $dir, $width)
 	$images = $_GET["images"];
 	if (is_null($images))
 	{
-		shots_new_serie($dir);
-		shots_delete_serie($dir);
-		shots_move_serie_first($dir);
-		shots_move_serie_up($dir);
-		shots_move_serie_down($dir);
-		shots_move_serie_last($dir);
+		shots_new_serie($edit, $dir);
+		shots_delete_serie($edit, $dir);
+		shots_move_serie_first($edit, $dir);
+		shots_move_serie_up($edit, $dir);
+		shots_move_serie_down($edit, $dir);
+		shots_move_serie_last($edit, $dir);
 	}
 	else
 	{
-		shots_upload_image($images);
-		shots_delete_image($images);
-		shots_move_image_first($images);
-		shots_move_image_up($images);
-		shots_move_image_down($images);
-		shots_move_image_last($images);
+		shots_upload_image($edit, $images);
+		shots_delete_image($edit, $images);
+		shots_move_image_first($edit, $images);
+		shots_move_image_up($edit, $images);
+		shots_move_image_down($edit, $images);
+		shots_move_image_last($edit, $images);
 	}
 
 	echo "<!-- start shots -->\n";
